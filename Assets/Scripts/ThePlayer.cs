@@ -6,6 +6,7 @@ public class ThePlayer : MonoBehaviour
 {
     public float v, dy;
     public float speed;
+    public GameObject projectile;
 
     private float hInput = 0;
 
@@ -41,5 +42,11 @@ public class ThePlayer : MonoBehaviour
     public void startMoving(float horizontalInput)
     {
         hInput = horizontalInput;
+    }
+
+    public void shoot()
+    {
+        Instantiate(projectile, GameObject.Find("Ship").transform.position, Quaternion.identity);
+        //transform.Translate(0, Time.deltaTime * level, 0, Space.World);
     }
 }
