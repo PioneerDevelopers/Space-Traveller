@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class ThePlayer : MonoBehaviour
 {
+
     public float v, dy;
     public float speed;
+    public float moveForce = 365f;
+    public float maxSpeed = 5f;
+
     public GameObject projectile;
+
+    private Rigidbody2D rb2d;
 
     private float hInput = 0;
 
     // Start is called before the first frame update
 
-    //void awake()
-    //{
-
-    //}
+    void Awake()
+    {
+        rb2d = gameObject.AddComponent<Rigidbody2D>();
+    }
 
     // Update is called once per frame
 
@@ -23,12 +29,21 @@ public class ThePlayer : MonoBehaviour
     {
 
 
+        //#if !UNITY_ANDROID
+        //Move(Input.GetAxis("Horizontal"));
+        //#else
+        //Move(hInput);
+        //#endif
+
+    }
+
+    private void FixedUpdate()
+    {
         #if !UNITY_ANDROID
         Move(Input.GetAxis("Horizontal"));
         #else
         Move(hInput);
         #endif
-
     }
 
     private void Move(float horizontalInput)
@@ -42,6 +57,21 @@ public class ThePlayer : MonoBehaviour
     public void startMoving(float horizontalInput)
     {
         hInput = horizontalInput;
+    }
+
+    public void physMove(float horizontalInput)
+    {
+        //rb2d.MovePosition()
+        if (horizontalInput * rb2d.velocity.x < maxSpeed)
+        {
+            rb2d.AddForce(Vector2.right * horizontalInput * moveForce);
+        }
+
+        if (Mathf.Abs(rb2d.velocity.x) > maxSpeed)
+        {
+            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxSpeed, rb2d.velocity.y);
+        }
+
     }
 
     public void shoot()
