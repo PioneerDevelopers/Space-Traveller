@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin
       objectReference: {fileID: 0}
+    - target: {fileID: 269700133852469309, guid: 8139ba9ed1618ea45ae93678ddd5c640,
+        type: 3}
+      propertyPath: m_TagString
+      value: Pick up
+      objectReference: {fileID: 0}
     - target: {fileID: 269700133852469308, guid: 8139ba9ed1618ea45ae93678ddd5c640,
         type: 3}
       propertyPath: m_LocalPosition.x

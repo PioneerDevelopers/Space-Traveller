@@ -13,6 +13,8 @@ public class EntityBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        transform.Translate(0, Time.deltaTime * -1, 0, Space.World);
     }
+
 }

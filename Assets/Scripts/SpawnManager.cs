@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
     public Transform coinTest;
     public Transform shipTest;
 
-    private BoxCollider2D bc2d;
+    private Transform spwn;
     private float timer = 0.0f;
     private GameObject[] gameObjects;
     private Transform[] testObjects;
@@ -26,8 +26,8 @@ public class SpawnManager : MonoBehaviour
 
         testObjects = new Transform[] { obsTest, coinTest, shipTest };
 
-        //bc2d = GetComponent<BoxCollider2D>();
-
+        spwn = GetComponent<Transform>();
+        Debug.Log(spwn);
         //int choice = Random.Range(0, 3);
         //Instantiate(obstacle, new Vector2(0, 8), Quaternion.identity);
 
@@ -41,8 +41,8 @@ public class SpawnManager : MonoBehaviour
         
         if (timer > 5)
         {
-            //int choice = Random.Range(0, 3);
-            //Instantiate(gameObjects[choice], bc2d.transform.position, Quaternion.identity);
+            int choice = Random.Range(0, 3);
+            Instantiate(gameObjects[choice], spwn.transform.position, Quaternion.identity);
             Debug.Log("Timer divisible");
             entitySpawn();
             timer -= 5;
@@ -53,9 +53,9 @@ public class SpawnManager : MonoBehaviour
     {
         int choice = Random.Range(0, 3);
         //Debug.Log("Choice: " + choice + "Object type: " + gameObjects[2]);
-        //Instantiate(gameObjects[0], new Vector2(0, 8), Quaternion.identity);
+        Instantiate(gameObjects[0], new Vector2(0, 8), Quaternion.identity);
 
-        Instantiate(testObjects[choice], new Vector2(0, 8), Quaternion.identity);
+        //Instantiate(testObjects[choice], new Vector2(0, 8), Quaternion.identity);
 
     }
 }

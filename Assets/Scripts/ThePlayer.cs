@@ -79,4 +79,17 @@ public class ThePlayer : MonoBehaviour
         Instantiate(projectile, GameObject.Find("Ship").transform.position, Quaternion.identity);
         //transform.Translate(0, Time.deltaTime * level, 0, Space.World);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pick up"))
+        {
+            other.gameObject.SetActive(false);
+        }
+
+        if (other.gameObject.CompareTag("MOB"))
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }
