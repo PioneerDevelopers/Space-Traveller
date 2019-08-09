@@ -10,7 +10,8 @@ public class ThePlayer : MonoBehaviour
     public float moveForce = 365f;
     public float maxSpeed = 5f;
 
-    public GameObject projectile;
+    public Transform projectile;
+    public Joystick joystick;
 
     private Rigidbody2D rb2d;
 
@@ -35,28 +36,91 @@ public class ThePlayer : MonoBehaviour
         //Move(hInput);
         //#endif
 
+        if(transform.position.x < 0)
+        {
+            Debug.Log('R');
+        }
+        else if(transform.position.x > 0)
+        {
+            Debug.Log('L');
+        }
+        else
+        {
+            Debug.Log('M');
+        }
+
+
     }
 
     private void FixedUpdate()
     {
+        //remap for joysticks
         #if !UNITY_ANDROID
         Move(Input.GetAxis("Horizontal"));
         #else
         Move(hInput);
         #endif
+        //Move(Input.GetAxis("Horizontal"));
+
+    }
+
+    private char PosChk()
+    {
+        if (transform.position.x < 0)
+        {
+            return('L');
+        }
+        else if (transform.position.x > 0)
+        {
+            return('R');
+        }
+        else
+        {
+            return('M');
+        }
+
     }
 
     private void Move(float horizontalInput)
     {
-        speed = 6;
+         float cPos = transform.position.x;
+
         //v = Input.GetAxis("Horizontal");
-        dy = horizontalInput * speed * Time.deltaTime;
-        transform.position = new Vector2(transform.position.x + dy, transform.position.y);
+
+        //These two lines below are for movement incrementally
+        //speed = 6;
+        //dy = horizontalInput * speed * Time.deltaTime;
+
+        //since for this game we dont need incremental movement we will be using static values (aka no need for "Time.deltaTime")
+        if (horizontalInput > 0 && PosChk() != 'R')
+        {
+            //Had to convert horizontalInput from double to float
+
+            transform.position = new Vector2(cPos + (float)1.8 * horizontalInput, transform.position.y);
+        }
+        else if(horizontalInput < 0 && PosChk() != 'L')
+        {
+            transform.position = new Vector2(cPos + (float)1.8 * horizontalInput, transform.position.y);
+        }
+        else
+        {
+            // Do Nothing, might need to change this to make it more graceful
+        }
+        
     }
 
     public void startMoving(float horizontalInput)
     {
+        //float horizontalInput was the originalparameter
+        //Debug.Log(joystick.Horizontal);
+        //hInput = joystick.Horizontal;
         hInput = horizontalInput;
+
+    }
+
+    public void stopMoving()
+    {
+        hInput = 0;
     }
 
     public void physMove(float horizontalInput)
@@ -74,14 +138,17 @@ public class ThePlayer : MonoBehaviour
 
     }
 
+    //not for this build of space travellers
     public void shoot()
     {
-        Instantiate(projectile, GameObject.Find("Ship").transform.position, Quaternion.identity);
+        Instantiate(projectile, GameObject.Find("Temp-Ship").transform.position, Quaternion.identity);
         //transform.Translate(0, Time.deltaTime * level, 0, Space.World);
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Contact");
+
         if (other.gameObject.CompareTag("Pick up"))
         {
             other.gameObject.SetActive(false);
